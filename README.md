@@ -1,5 +1,8 @@
 # Unerasable-Characters-II
 
+![](https://live.staticflickr.com/65535/49777309756_c10a86968d_c.jpg)
+![](https://live.staticflickr.com/65535/49777633092_f8e67dd414_c.jpg)
+
 The project collects data from censored/erased (permission denied) data from Weibo via the platform called [weiboscope](weiboscope.jmsc.hku.hk/), developed by Dr. Fu, King Wa from Hong Kong University .
 
 The custom-software presented the erased data and the duration of each 'tweet' is subjected to the original visibility, in which the time is calculated from the substraction between erased/censored time and created/posted time on Weibo. 
