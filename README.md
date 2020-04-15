@@ -1,5 +1,6 @@
 # Unerasable-Characters-II
 
+![](unerasablecharactersII_gif.gif)
 ![](https://live.staticflickr.com/65535/49777309756_c10a86968d_c.jpg)
 ![](https://live.staticflickr.com/65535/49777633092_f8e67dd414_c.jpg)
 
