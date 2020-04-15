@@ -16,7 +16,7 @@ class Nodel { //create a class: template/blueprint of objects with properties an
 			fill(255);
 			//textFont(myFont);
 			textSize(25);
-			if (time < this.calTime/100) {
+			if (time < this.calTime) {
 				text(this.s.charAt(this.i), this.x, this.y);
 				this.i++;
 				if (this.i == this.s.length) {
