@@ -7,12 +7,12 @@
 - export to a json file (for the javascript program)
 
 To do:
-- automate the process with acculated text that write on the existing json file
-- store the accumulated data and check duplicate id (check link- url + read json + loop data)
+- automate the process with accumulated text that write on the existing json file (possible need to change to csv as the file grows)
+- store the accumulated data (optimize the code: storing data for each append)
+-  check duplicate id (check link- url + read json + loop data)
 - still need to special handle some tweets:
     - https://weiboscope.jmsc.hku.hk/list.php?id=4493266445221255
     -  http://t.cn/A6wAXHW1
-- possible need to change to csv as the file grows
 '''
 
 import requests
@@ -30,6 +30,8 @@ soup = BeautifulSoup(response.content, 'html.parser')
 href = [i['href'] for i in soup.find_all('a', href=True)]
 #print(project_href)
 
+'''
+#create a new json file - description part / once off
 jsonData = {
     "description": "This file contains sample weibo data: permission denied posts",
     "source": "https://weiboscope.jmsc.hku.hk/latest.php",
@@ -37,6 +39,8 @@ jsonData = {
     "credit": "Fu, King Wa, Hong Kong University",
     "lastUpdate": time.ctime(),
     "data": []}
+'''
+
 
 for link in href:
     print(link)
@@ -67,17 +71,30 @@ for link in href:
         print(dataCensored)
         print(dataContent)
         #push to jsonData
-        jsonData['data'].append({
-            'content': dataContent,
-            'createdAt': dataCreated,
-            'censoredAt': dataCensored
-        })
+        with open('data.json') as json_file:
+            data = json.load(json_file)
+            jsonData = data['data']
+            # python object to be appended
+            jsonData.append({
+                'id': link,
+                'content': dataContent,
+                'createdAt': dataCreated,
+                'censoredAt': dataCensored
+            })
+        # write json - existing file
+        def write_json(data, filename='data.json'):
+            with open(filename,'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=4, separators=(',', ': '),ensure_ascii=False)
+
+        write_json(data)
     else:
         print("nothing")
 
-#write json
+'''
+#write json - new file creation
 with open('data.json', 'w', encoding='utf-8') as jsonfile:
     json.dump(jsonData, jsonfile, indent=4, separators=(',', ': '),ensure_ascii=False)
+'''
 
 '''
 #test
