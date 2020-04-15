@@ -8,10 +8,11 @@
 
 To do:
 - automate the process with acculated text that write on the existing json file
-- store and check duplicate id
+- store the accumulated data and check duplicate id (check link- url + read json + loop data)
 - still need to special handle some tweets:
     - https://weiboscope.jmsc.hku.hk/list.php?id=4493266445221255
     -  http://t.cn/A6wAXHW1
+- possible need to change to csv as the file grows
 '''
 
 import requests
