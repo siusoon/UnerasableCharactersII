@@ -5,7 +5,13 @@
 - Then scrape three major parameters: created at, censored at, content for each link
 - data processing to clean the data
 - export to a json file (for the javascript program)
-- to do: automate the process with acculated text that write on the existing json file
+
+To do:
+- automate the process with acculated text that write on the existing json file
+- store and check duplicate id
+- still need to special handle some tweets:
+    - https://weiboscope.jmsc.hku.hk/list.php?id=4493266445221255
+    -  http://t.cn/A6wAXHW1
 '''
 
 import requests
@@ -55,15 +61,18 @@ for link in href:
     dataContent = re.sub(r'(\[\'|\'])','', str(dataContent))  #remove '[]'
     dataContent = str(dataContent).strip()
     #print data on console
-    print(dataCreated)
-    print(dataCensored)
-    print(dataContent)
-    #push to jsonData
-    jsonData['data'].append({
-        'content': dataContent,
-        'createdAt': dataCreated,
-        'censoredAt': dataCensored
-    })
+    if not dataContent == '':
+        print(dataCreated)
+        print(dataCensored)
+        print(dataContent)
+        #push to jsonData
+        jsonData['data'].append({
+            'content': dataContent,
+            'createdAt': dataCreated,
+            'censoredAt': dataCensored
+        })
+    else:
+        print("nothing")
 
 #write json
 with open('data.json', 'w', encoding='utf-8') as jsonfile:
@@ -71,7 +80,7 @@ with open('data.json', 'w', encoding='utf-8') as jsonfile:
 
 '''
 #test
-url2 = 'https://weiboscope.jmsc.hku.hk/list.php?id=4491766965156767'
+url2 = 'https://weiboscope.jmsc.hku.hk/list.php?id=4493266445221255'
 response2 = requests.get(url2)
 soup2 = BeautifulSoup(response2.content, 'html.parser')
 data = soup2.find('p')
@@ -95,7 +104,10 @@ dataContent = re.sub(r'(Image.*|\\u200b|http[\S]+\s)', '', str(dataContent))  #r
 dataContent = re.sub(r'(\[\'|\'])','', str(dataContent))
 dataContent = str(dataContent).strip()
 #print data on console
-print(dataCreated)
-print(dataCensored)
-print(dataContent)
+if not dataContent == '':
+    print(dataCreated)
+    print(dataCensored)
+    print(dataContent)
+else:
+    print("nothing")
 '''
