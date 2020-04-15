@@ -7,6 +7,8 @@ logic:
 
 to do:
 1. find a right chinese font
+2. resizing the screen and if mobile is allowed?
+3. establish the latest data update system
 */
 
 
@@ -28,15 +30,15 @@ function setup(){
 	time = millis();
 	datafiles = datafile.data;
 	//calculate grid
-	cols = width/grid_space;
-	rows = height/grid_space;
+	cols = (width-10)/grid_space;
+	rows = (height-10)/grid_space;
 	for (let i=0; i < cols; i++) {//no of cols
 		for (let j=0; j < rows; j++){ //no of rows
 			let x = i * grid_space; //actual x coordinate
 			let y = j * grid_space; //actual y coordinate
 			let s1 = int(random(datafiles.length));
 			let s = datafiles[s1].content;
-			nodel.push(new Nodel(s, x, y, 12, datafiles[s1].createdAt, datafiles[s1].censoredAt));  //s, x, y, sp, startT, delT
+			nodel.push(new Nodel(s, x+5, y-5, 12, datafiles[s1].createdAt, datafiles[s1].censoredAt));  //s, x, y, sp, startT, delT
 		}
 	}
 
