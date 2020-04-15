@@ -5,6 +5,7 @@
 - Then scrape three major parameters: created at, censored at, content for each link
 - data processing to clean the data
 - export to a json file (for the javascript program)
+- to do: automate the process with acculated text that write on the existing json file
 '''
 
 import requests
