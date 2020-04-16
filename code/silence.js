@@ -1,9 +1,9 @@
-class Nodel { //create a class: template/blueprint of objects with properties and behaviors
+class Nodel {
 	constructor(s, x, y, sp, startT, delT) {
 		this.s = s;
 		this.x = x;
 		this.y = y;
-		this.speed = sp;
+		this.speed = sp; //not using this at the moment
 		this.startT = new Date(startT.slice(0,4), startT.slice(5,7), startT.slice(8,10), startT.slice(11,13), startT.slice(14,16), startT.slice(17,19)).getTime();
 		this.delT = new Date(delT.slice(0,4), delT.slice(5,7), delT.slice(8,10), delT.slice(11,13), delT.slice(14,16), delT.slice(17,19)).getTime();
 		this.status = true;
@@ -16,7 +16,7 @@ class Nodel { //create a class: template/blueprint of objects with properties an
 			fill(255);
 			//textFont(myFont);
 			textSize(25);
-			if (time < this.calTime) {
+			if (time < this.calTime) {	//default unit is ms
 				text(this.s.charAt(this.i), this.x, this.y);
 				this.i++;
 				if (this.i == this.s.length) {

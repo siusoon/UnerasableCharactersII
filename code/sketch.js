@@ -1,8 +1,10 @@
 /*
 logic:
-- randomly extract the message from censored weibo
+- load the JSON file with all the stored censored tweets
+- randomly extract the message from the json file
 - loop and display each of the message in a grid format
-- specific text display will stop accordingly to the visible period
+- each tweet will display in a character-by-character format
+- specific message will stop according to the originnal visible period 
 - loop everything again (reload) until all the text objects are disappeared on the screen for a certain period of time
 */
 
@@ -20,6 +22,7 @@ function preload() {
   datafile = loadJSON("data.json");
 }
 function setup(){
+	background(0);
 	createCanvas(windowWidth,windowHeight);
 	frameRate(5);
 	time = millis();
@@ -47,7 +50,6 @@ function draw() {
 	}
 	checkCensored();
 	checkReload();
-
 }
 
 function checkCensored(){
