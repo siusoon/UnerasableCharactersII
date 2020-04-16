@@ -3,7 +3,7 @@
 ![](unerasablecharactersII.gif)
 *Unerasable Characters II: A fast forward illustration on how tweets are disappeared online*
 
-[RUNME](https://siusoon.github.io/UnerasableCharactersII/code/)
+[Click to RUN on your web browser](https://siusoon.github.io/UnerasableCharactersII/code/)
 
 The project explores the temporality of erasure and politics of voices. As part of the series Unerasable Characters, this web-based custom-software presents the erased 'tweets' from the Chinese Social Media Platform Weibo in a grid format, in which each tweet is further broken down into character-by-character display. The duration of each 'tweet' is computed and translated from the original visibile time online, which is calculated from subtracting erased/censored time and created/posted time on Weibo. 
 
