@@ -4,11 +4,6 @@ logic:
 - loop and display each of the message in a grid format
 - specific text display will stop accordingly to the visible period
 - loop everything again (reload) until all the text objects are disappeared on the screen for a certain period of time
-
-to do:
-1. find a right chinese font
-2. resizing the screen and if mobile is allowed?
-3. establish the latest data update system
 */
 
 
@@ -52,6 +47,7 @@ function draw() {
 	}
 	checkCensored();
 	checkReload();
+
 }
 
 function checkCensored(){
