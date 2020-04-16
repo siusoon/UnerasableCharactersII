@@ -6,13 +6,6 @@
 - data processing to clean the data
 - export to a json file (for the javascript program)
 
-To do:
-- automate the process with accumulated text that write on the existing json file (possible need to change to csv as the file grows)
-- store the accumulated data (optimize the code: storing data for each append)
--  check duplicate id (check link- url + read json + loop data)
-- still need to special handle some tweets:
-    - https://weiboscope.jmsc.hku.hk/list.php?id=4493266445221255
-    -  http://t.cn/A6wAXHW1
 '''
 
 import requests
