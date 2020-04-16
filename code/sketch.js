@@ -4,7 +4,7 @@ logic:
 - randomly extract the message from the json file
 - loop and display each of the message in a grid format
 - each tweet will display in a character-by-character format
-- specific message will stop according to the originnal visible period 
+- specific message will stop according to the originnal visible period
 - loop everything again (reload) until all the text objects are disappeared on the screen for a certain period of time
 */
 
@@ -18,7 +18,7 @@ let grid_space = 40;
 let cols, rows;  //for drawing the grid purpose
 
 function preload() {
-	myFont = loadFont('assets/HanyiSentyTang.ttf');
+	//myFont = loadFont('assets/HanyiSentyTang.ttf');
   datafile = loadJSON("data.json");
 }
 function setup(){
