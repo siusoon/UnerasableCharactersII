@@ -1,8 +1,6 @@
-# Unerasable-Characters-II
+# Unerasable Characters II
 
 ![](unerasablecharactersII.gif)
-![](https://live.staticflickr.com/65535/49777309756_c10a86968d_c.jpg)
-![](https://live.staticflickr.com/65535/49777633092_f8e67dd414_c.jpg)
 
 [RUNME](https://siusoon.github.io/UnerasableCharactersII/code/)
 
@@ -11,3 +9,6 @@ The project explores the temporality of erasure and politics of voices. As part 
 The project collects voices in the form of censored/erased (permission denied) text from Weibo via the platform called [weiboscope](weiboscope.jmsc.hku.hk/), developed by Dr. Fu, King Wa from Hong Kong University .Technically, it uses python to do the web scraping with limited data available (only past 7 days, max 200 records), and the piece is written in p5.js. 
 
 *still in a fine-tuning stage*
+
+![](https://live.staticflickr.com/65535/49777309756_c10a86968d_c.jpg)
+![](https://live.staticflickr.com/65535/49777633092_f8e67dd414_c.jpg)
