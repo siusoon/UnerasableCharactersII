@@ -1,6 +1,7 @@
 # Unerasable Characters II
 
 ![](unerasablecharactersII.gif)
+*Unerasable Characters II: A fast forward illustration on how tweets are disappeared online*
 
 [RUNME](https://siusoon.github.io/UnerasableCharactersII/code/)
 
