@@ -15,7 +15,7 @@ class Nodel {
 		if (this.status){
 			fill(255);
 			//textFont(myFont);
-			textSize(25);
+			textSize(17);
 			if (time < this.calTime) {	//default unit is ms
 				text(this.s.charAt(this.i), this.x, this.y);
 				this.i++;

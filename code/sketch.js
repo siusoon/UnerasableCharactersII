@@ -14,7 +14,7 @@ let datafiles = [];
 let nodel = [];
 let myFont;
 let time;
-let grid_space = 40;
+let grid_space = 30;
 let cols, rows;  //for drawing the grid purpose
 
 function preload() {
@@ -22,7 +22,6 @@ function preload() {
   datafile = loadJSON("data.json");
 }
 function setup(){
-	background(0);
 	createCanvas(windowWidth,windowHeight);
 	frameRate(5);
 	time = millis();
