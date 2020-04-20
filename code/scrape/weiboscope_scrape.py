@@ -43,7 +43,7 @@ for link in href:
     dataContent = re.sub(r'<p>.*?Content: ', '', str(data)) #start till Content:
     dataContent = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataContent)) #remove html tags
     dataContent = re.sub(r'(Image.*|\\u200b|http[\S]+\s)', '', str(dataContent))  #remove image, unicode and http
-    dataContent = re.sub(r'(\[\'|\'])','', str(dataContent)) #remove '[]'
+    dataContent = re.sub(r'(\[\'|\']|\n|\r)','', str(dataContent)) #remove '[]' and new line
     dataContent = str(dataContent).strip()
     #print data on console
     if not dataContent == '':
