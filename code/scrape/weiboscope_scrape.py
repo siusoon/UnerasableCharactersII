@@ -23,18 +23,6 @@ soup = BeautifulSoup(response.content, 'html.parser')
 href = [i['href'] for i in soup.find_all('a', href=True)]
 #print(project_href)
 
-'''
-#create a new json file - description part / once off
-jsonData = {
-    "description": "This file contains sample weibo data: permission denied posts",
-    "source": "https://weiboscope.jmsc.hku.hk/latest.php",
-    "Number_censored_messages": "Past 7 days, max 200, order by publication date",
-    "credit": "Fu, King Wa, Hong Kong University",
-    "lastUpdate": time.ctime(),
-    "data": []}
-'''
-
-
 for link in href:
     print(link)
     url2 = link
@@ -53,9 +41,9 @@ for link in href:
     dataCensored = re.sub(r'(\[\'|\'])','', str(dataCensored))  #remove '[]'
     #extract content:
     dataContent = re.sub(r'<p>.*?Content: ', '', str(data)) #start till Content:
-    dataContent = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataContent))
+    dataContent = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataContent)) #remove html tags
     dataContent = re.sub(r'(Image.*|\\u200b|http[\S]+\s)', '', str(dataContent))  #remove image, unicode and http
-    dataContent = re.sub(r'(\[\'|\'])','', str(dataContent))
+    dataContent = re.sub(r'(\[\'|\'])','', str(dataContent)) #remove '[]'
     dataContent = str(dataContent).strip()
     #print data on console
     if not dataContent == '':
@@ -81,42 +69,3 @@ for link in href:
         write_json(data)
     else:
         print("nothing")
-
-'''
-#write json - new file creation
-with open('data.json', 'w', encoding='utf-8') as jsonfile:
-    json.dump(jsonData, jsonfile, indent=4, separators=(',', ': '),ensure_ascii=False)
-'''
-
-'''
-#test
-url2 = 'https://weiboscope.jmsc.hku.hk/list.php?id=4493266445221255'
-response2 = requests.get(url2)
-soup2 = BeautifulSoup(response2.content, 'html.parser')
-data = soup2.find('p')
-#df = df.replace() #e.g t.cn/xxxx [space
-print(data)
-#extract CreatedAt:
-dataCreated = re.findall(r'<p><b>Cr.*?<p><b>', str(data))
-dataCreated = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataCreated))
-dataCreated = re.sub(r'Created+\s+At:+\s', '', str(dataCreated))
-dataCreated = re.sub(r'(\[\'|\'])','', str(dataCreated))
-#extract Censored At:
-dataCensored = re.findall(r'<p><b>Ce.*?<p>', str(data))
-dataCensored = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataCensored))
-dataCensored = re.sub(r'Censored+\s+At:+\s', '', str(dataCensored))
-dataCensored = re.sub(r'(\[\'|\'])','', str(dataCensored))
-#extract content:
-dataContent = re.sub(r'<p>.*?Content: ', '', str(data)) #start till Content:
-dataContent = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataContent))
-dataContent = re.sub(r'(Image.*|\\u200b|http[\S]+\s)', '', str(dataContent))  #remove image, unicode and http
-dataContent = re.sub(r'(\[\'|\'])','', str(dataContent))
-dataContent = str(dataContent).strip()
-#print data on console
-if not dataContent == '':
-    print(dataCreated)
-    print(dataCensored)
-    print(dataContent)
-else:
-    print("nothing")
-'''
