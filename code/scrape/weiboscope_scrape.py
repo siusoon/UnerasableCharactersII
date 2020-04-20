@@ -52,11 +52,10 @@ for link in href:
     dataCensored = re.sub(r'Censored+\s+At:+\s', '', str(dataCensored)) #remove the field name
     dataCensored = re.sub(r'(\[\'|\'])','', str(dataCensored))  #remove '[]'
     #extract content:
-    dataContent = re.findall(r'<p><b>Con.*', str(data))  #extract the field name
-    dataContent = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataContent)) #remove html tags
-    dataContent = re.sub(r'Content:\s', '', str(dataContent))   #remove the field name
+    dataContent = re.sub(r'<p>.*?Content: ', '', str(data)) #start till Content:
+    dataContent = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataContent))
     dataContent = re.sub(r'(Image.*|\\u200b|http[\S]+\s)', '', str(dataContent))  #remove image, unicode and http
-    dataContent = re.sub(r'(\[\'|\'])','', str(dataContent))  #remove '[]'
+    dataContent = re.sub(r'(\[\'|\'])','', str(dataContent))
     dataContent = str(dataContent).strip()
     #print data on console
     if not dataContent == '':
@@ -108,9 +107,8 @@ dataCensored = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataCensored))
 dataCensored = re.sub(r'Censored+\s+At:+\s', '', str(dataCensored))
 dataCensored = re.sub(r'(\[\'|\'])','', str(dataCensored))
 #extract content:
-dataContent = re.findall(r'<p><b>Con.*', str(data))
+dataContent = re.sub(r'<p>.*?Content: ', '', str(data)) #start till Content:
 dataContent = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataContent))
-dataContent = re.sub(r'Content:\s', '', str(dataContent))   #remove the field name
 dataContent = re.sub(r'(Image.*|\\u200b|http[\S]+\s)', '', str(dataContent))  #remove image, unicode and http
 dataContent = re.sub(r'(\[\'|\'])','', str(dataContent))
 dataContent = str(dataContent).strip()
