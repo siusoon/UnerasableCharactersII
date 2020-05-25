@@ -13,5 +13,6 @@ The project collects voices in the form of censored/erased (permission denied) t
 
 More info on the text from Weiboscope:  Fu, King-wa and Chan, Chung-hong and Chau, Michael, Assessing Censorship on Microblogs in China: Discriminatory Keyword Analysis and Impact Evaluation of the 'Real Name Registration' Policy (May 15, 2013). IEEE Internet Computing, Vol. 17, No. 3, pp. 42-50, May-June 2013, doi:10.1109/MIC.2013.28. Available at SSRN: https://ssrn.com/abstract=2265271
 
+![](images/installation1.png)
 ![](https://live.staticflickr.com/65535/49777309756_c10a86968d_c.jpg)
 ![](https://live.staticflickr.com/65535/49777633092_f8e67dd414_c.jpg)
