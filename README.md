@@ -17,6 +17,8 @@ More info on the text from Weiboscope:  Fu, King-wa and Chan, Chung-hong and Cha
 Proposed installation setup.
 
 ![](https://live.staticflickr.com/65535/49777309756_c10a86968d_c.jpg)
+
 running Unerasable Characters II at time T
 ![](https://live.staticflickr.com/65535/49777633092_f8e67dd414_c.jpg)
+
 running Unerasable Characters II at time T + duration X 
