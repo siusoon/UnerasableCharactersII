@@ -6,6 +6,9 @@ logic:
 - each tweet will display in a character-by-character format
 - specific message will stop according to the originnal visible period
 - loop everything again (reload) until all the text objects are disappeared on the screen for a certain period of time
+
+updates:
+- add console log for future bug fix on characters encoding
 */
 
 
@@ -36,6 +39,7 @@ function setup(){
 			let s1 = int(random(datafiles.length));
 			let s = datafiles[s1].content;
 			nodel.push(new Nodel(s, x+5, y-5, 12, datafiles[s1].createdAt, datafiles[s1].censoredAt));  //s, x, y, sp, startT, delT
+      console.log(i + "," + j + ": " + datafiles[s1].id);
 		}
 	}
 
