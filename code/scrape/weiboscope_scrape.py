@@ -5,7 +5,7 @@
 - Then scrape three major parameters: created at, censored at, content for each link
 - data processing to clean the data
 - export to a json file (for the javascript program)
-
+- retry *once
 '''
 
 import requests
@@ -15,19 +15,8 @@ from bs4 import BeautifulSoup
 import re
 import json
 
-url = 'https://weiboscope.jmsc.hku.hk/latest.php'
-response = requests.get(url)
-print(response)
-
-soup = BeautifulSoup(response.content, 'html.parser')
-href = [i['href'] for i in soup.find_all('a', href=True)]
-#print(project_href)
-
-for link in href:
-    print(link)
-    url2 = link
-    response2 = requests.get(url2)
-    soup2 = BeautifulSoup(response2.content, 'html.parser')
+def processDate( dataresponse ):
+    soup2 = BeautifulSoup(dataresponse.content, 'html.parser')
     data = soup2.find('p')
     #extract CreatedAt:
     dataCreated = re.findall(r'<p><b>Cr.*?<p><b>', str(data))  #extract the field name
@@ -69,3 +58,25 @@ for link in href:
         write_json(data)
     else:
         print("nothing")
+
+url = 'https://weiboscope.jmsc.hku.hk/latest.php'
+response = requests.get(url)
+print(response)
+
+soup = BeautifulSoup(response.content, 'html.parser')
+href = [i['href'] for i in soup.find_all('a', href=True)]
+#print(project_href)
+
+for link in href:
+    print(link)
+    url2 = link
+    try:
+        response2 = requests.get(url2, timeout=30)
+        processDate( response2 )
+    except requests.Timeout as e:
+        print("OOPS!! Timeout Error")
+        try:
+            response2 = requests.get(url2)
+            processDate( response2 )
+        except requests.Timeout as e:
+            print("OOPS!! Timeout Error")
