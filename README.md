@@ -7,9 +7,9 @@
 
 The project explores the temporality of voices and politics of erasure. As part of the series Unerasable Characters, this web-based custom-software presents the erased 'tweets' from the Chinese Social Media Platform Weibo in a grid format, in which each tweet is further broken down into character-by-character display. The duration of each 'tweet' is computed and translated from the original visibile time online, which is calculated from subtracting erased/censored time and created/posted time on Weibo. 
 
-The project collects voices in the form of censored/erased (permission denied) text from Weibo via the platform called [weiboscope](https://weiboscope.jmsc.hku.hk/), developed by Dr. Fu, King Wa from Hong Kong University .Technically, it uses python to do the web scraping with limited data available (only past 7 days, max 200 records), and the piece is written in p5.js. The current data contains censored/erased text from 9.Apr to 30.Jun 2020.
+The project collects voices in the form of censored/erased (permission denied) text from Weibo via the platform called [weiboscope](https://weiboscope.jmsc.hku.hk/), developed by Dr. Fu, King Wa from Hong Kong University .Technically, it uses python to do the web scraping with limited data available (only past 7 days, max 200 records), and the piece is written in p5.js. The current data contains censored/erased text from 9.Apr to 4.Jul 2020.
 
-*still in a fine-tuning stage*
+*still in a fine-tuning stage: automate the daily data update, as well as replacing all the text with 🟥 except punctuation (it is not the matter of understanding the chinese characters)*
 
 More info on the text from Weiboscope:  Fu, King-wa and Chan, Chung-hong and Chau, Michael, Assessing Censorship on Microblogs in China: Discriminatory Keyword Analysis and Impact Evaluation of the 'Real Name Registration' Policy (May 15, 2013). IEEE Internet Computing, Vol. 17, No. 3, pp. 42-50, May-June 2013, doi:10.1109/MIC.2013.28. Available at SSRN: https://ssrn.com/abstract=2265271
 
