@@ -7,7 +7,7 @@
 2. Update json
 - loop through all the data and update/write in one go
 3. cleaning JSON data (update with latest count + remove too old data to avoid the file keep expanding over time)
-*4. sendemail() if any connection fail entirely (to be worked on)
+*4. sendemail() if any connection fail entirely (now only log the file)
 '''
 
 import requests
@@ -129,7 +129,7 @@ def processURL():
 def sendemail():
     #send the fail report email to the author
     print('nothing + send email')
-
+    logging.info(str(LOG_timestamp) + " - critical issues & the script stops")
 #3 cleaning data
 def cleaningJSON():
     with open('data.json') as f: #read json file data
