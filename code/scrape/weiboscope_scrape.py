@@ -38,7 +38,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import pytz
 
-path = "Your_PATH"
+path = "YOUR_PATH"
 HK = pytz.timezone('Asia/Hong_Kong')
 LOG_timestamp = datetime.datetime.now(HK)
 logging.basicConfig(filename=path + "logfilename.log", level=logging.INFO)
@@ -112,13 +112,13 @@ def processJSON():
     with open(path+'data.json') as json_file:
         data = json.load(json_file)
         jsonData = data['data']
-        # python object to append 
+        # python object to append
         for i in range(len(t_url)):
             jsonData.append({
                 'id': t_url[i],
                 'content': t_dataContent[i],
                 'createdAt': t_dataCreated[i],
-                'censoredAt': t_dataContent[i]
+                'censoredAt': t_dataCensored[i]
             })
     # write json - existing file
     def write_json(data, filename=path+'data.json'):
