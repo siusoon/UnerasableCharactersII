@@ -12,7 +12,7 @@ Logic:
 - store in temp arrays and prepare to append to the JSON file in one go
 2. Update json
 - loop through all the temp data arrays and update the JSON file in one go
-3. cleaning JSON data (update with latest count + timestamp + remove too old data to avoid the file keep expanding over time)
+3. cleaning JSON data (update with latest count + timestamp + remove too old data (more than a year) to avoid the file keep expanding over time)
 *4. sendemail() if any connection fail entirely (now only log the file)
 
 to implement:
@@ -38,7 +38,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import pytz
 
-path = "YOUR_PATH"
+path = "Your_PATH"
 HK = pytz.timezone('Asia/Hong_Kong')
 LOG_timestamp = datetime.datetime.now(HK)
 logging.basicConfig(filename=path + "logfilename.log", level=logging.INFO)
@@ -112,7 +112,7 @@ def processJSON():
     with open(path+'data.json') as json_file:
         data = json.load(json_file)
         jsonData = data['data']
-        # python object to be appended
+        # python object to append 
         for i in range(len(t_url)):
             jsonData.append({
                 'id': t_url[i],
