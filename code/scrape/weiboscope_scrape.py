@@ -1,13 +1,27 @@
+#!/usr/bin/python3
 '''
+weiboscope_scrape.py is part of the art project Unerasable Characters II, developed by Winnie Soon
+More: http://siusoon.net/unerasable-characters-ii/
+last update: 15 Jul 2020
+
+Logic:
 *need python3 filename.py
 1. Retrieve data from weiboscope
 - check error response (http - weiboscope)
-- get individual censorted data (with error check), & only process those have been censored within 24 hours from current time
-- store in temp arrays and append to the JSON file in one go
+- get individual censored data (with error check), & only process those have been censored within 24 hours against current time
+- store in temp arrays and prepare to append to the JSON file in one go
 2. Update json
-- loop through all the data and update/write in one go
-3. cleaning JSON data (update with latest count + remove too old data to avoid the file keep expanding over time)
+- loop through all the temp data arrays and update the JSON file in one go
+3. cleaning JSON data (update with latest count + timestamp + remove too old data to avoid the file keep expanding over time)
 *4. sendemail() if any connection fail entirely (now only log the file)
+
+to implement:
+- update the variable 'path'
+- set the cron job frequency (now is daily) e.g /opt/alt/python36/bin/python3.6 <filepath+filename.py>
+
+next/oustanding:
+- client side's chinese font
+- cleaning data e.g url, space, emoji handling
 '''
 
 import requests
@@ -24,9 +38,10 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import pytz
 
+path = "YOUR_PATH"
 HK = pytz.timezone('Asia/Hong_Kong')
 LOG_timestamp = datetime.datetime.now(HK)
-logging.basicConfig(filename="logfilename.log", level=logging.INFO)
+logging.basicConfig(filename=path + "logfilename.log", level=logging.INFO)
 
 #define arrays for json
 t_dataCreated = []
@@ -94,11 +109,10 @@ def processData( dataresponse, link ):
             print("nothing in the tweet")
 #2. Update JSON file with the gathered data
 def processJSON():
-    with open('data.json') as json_file:
+    with open(path+'data.json') as json_file:
         data = json.load(json_file)
         jsonData = data['data']
         # python object to be appended
-        print('hello test')
         for i in range(len(t_url)):
             jsonData.append({
                 'id': t_url[i],
@@ -107,7 +121,7 @@ def processJSON():
                 'censoredAt': t_dataContent[i]
             })
     # write json - existing file
-    def write_json(data, filename='data.json'):
+    def write_json(data, filename=path+'data.json'):
         with open(filename,'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4, separators=(',', ': '),ensure_ascii=False)
     write_json(data)
@@ -132,7 +146,7 @@ def sendemail():
     logging.info(str(LOG_timestamp) + " - critical issues & the script stops")
 #3 cleaning data
 def cleaningJSON():
-    with open('data.json') as f: #read json file data
+    with open(path+'data.json') as f: #read json file data
         data = json.load(f)
         #update the count and time
         try:
@@ -151,7 +165,7 @@ def cleaningJSON():
         data["Number_censored_messages"] = len(data['data'])
         data["last_update"]= str(LOG_timestamp) + " (HK time)"
 
-    with open('data.json','w', encoding='utf-8') as f: #write json file
+    with open(path+'data.json','w', encoding='utf-8') as f: #write json file
         print(json.dump(data, f, indent=4, ensure_ascii=False))
 
 # **start here**
