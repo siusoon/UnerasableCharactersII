@@ -3,7 +3,7 @@
 ![](unerasablecharactersII.gif)
 *Unerasable Characters II: A fast forward illustration on how tweets are disappeared online*
 
-[Click to RUN in your web browser](siusoon.net/erasure/)
+[Click to RUN in your web browser](http://siusoon.net/erasure/)
 
 The project explores the politics of erasure and the temporality of voices within the context of digital authoritarianism. It presents the sheer scale of unheard voices by technically examining and culturally reflecting the endlessness, and its wider consequences, of censorship that is implemented through technological platforms and infrastructure.
 
