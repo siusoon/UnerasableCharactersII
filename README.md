@@ -11,8 +11,6 @@ Unerasable Characters II: As part of the series Unerasable Characters, this vers
 
 The project collects voices in the form of censored/erased (permission denied) text from Weibo via the platform called [weiboscope](https://weiboscope.jmsc.hku.hk/), developed by Dr. Fu, King Wa from Hong Kong University. Technically, it uses python for daily web scraping with limited data available (only past 7 days, max 200 records), and the front-end piece is written in p5.js with the max of 1 year storage of the [erased data](http://www.siusoon.net/erasure/data.json). Based on previous experiences, it will take the average of 3 hours for the erasure (which is also the time gap of the actual visibility of tweets). 
 
-*still in a fine-tuning stage
-
 More info on the text from Weiboscope:  Fu, King-wa and Chan, Chung-hong and Chau, Michael, Assessing Censorship on Microblogs in China: Discriminatory Keyword Analysis and Impact Evaluation of the 'Real Name Registration' Policy (May 15, 2013). IEEE Internet Computing, Vol. 17, No. 3, pp. 42-50, May-June 2013, doi:10.1109/MIC.2013.28. Available at SSRN: https://ssrn.com/abstract=2265271
 
 Proposed installation setup:
