@@ -2,7 +2,7 @@
 '''
 weiboscope_scrape.py is part of the art project Unerasable Characters II, developed by Winnie Soon
 More: http://siusoon.net/unerasable-characters-ii/
-last update: 15 Jul 2020
+last update: 18 Feb 2021
 
 Logic:
 *need python3 filename.py
@@ -22,6 +22,11 @@ to implement:
 next/oustanding:
 - client side's chinese font
 - cleaning data e.g url, space, emoji handling
+
+log:
+- change of time format without the details of seconds
+    - a crack down of weiboscope developer accounts on around 21 Jan 2021
+    - change of censored at timestamp as of 17 Feb 2021
 '''
 
 import requests
@@ -76,7 +81,7 @@ def processData( dataresponse, link ):
     dataCensored = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataCensored)) #remove html tags
     dataCensored = re.sub(r'Censored+\s+At:+\s', '', str(dataCensored)) #remove the field name
     dataCensored = re.sub(r'(\[\'|\'])','', str(dataCensored))  #remove '[]'
-    date_time_obj = datetime.datetime.strptime(dataCensored, '%Y-%m-%d %H:%M:%S.%f')
+    date_time_obj = datetime.datetime.strptime(dataCensored, '%Y-%m-%d %H:%M:%S')
     #compare time withtin 24 hours (LOG_timestamp - now and the data censored )
     current_time = LOG_timestamp.strftime('%Y %d %m %H %M %S')
     current_time = datetime.datetime.strptime(current_time,'%Y %d %m %H %M %S')
