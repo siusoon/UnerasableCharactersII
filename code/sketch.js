@@ -8,7 +8,10 @@ logic:
 - loop everything again (reload) until all the text objects are disappeared on the screen for a certain period of time
 
 updates:
-- add console log for future bug fix on characters encoding
+- added console log for future bug fix on characters encoding
+- force refresh for every 24 hours (esp in an exhibition setting with more than 1 projection)
+
+last update 25 Feb 2021
 */
 
 
@@ -17,11 +20,11 @@ let datafiles = [];
 let nodel = [];
 let myFont;
 let time;
-let grid_space = 30;
+let grid_space = 35;
 let cols, rows;  //for drawing the grid purpose
 
 function preload() {
-	//myFont = loadFont('assets/HanyiSentyTang.ttf');
+	//myFont = loadFont('assets/');
   datafile = loadJSON("data.json");
 }
 function setup(){
@@ -64,7 +67,7 @@ function checkCensored(){
 }
 
 function checkReload(){
-	if(nodel.length==0) {
+	if((nodel.length==0) || (time > 86400000)) {
 		setTimeout(() => { location.reload(); }, 2000);
 	}
 }
