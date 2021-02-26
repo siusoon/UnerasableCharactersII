@@ -36,12 +36,12 @@ function setup(){
 	cols = (width-10)/grid_space;
 	rows = (height-10)/grid_space;
 	for (let i=0; i < cols; i++) {//no of cols
-		for (let j=0; j < rows; j++){ //no of rows
+		for (let j=0; j < rows -1 ; j++){ //no of rows
 			let x = i * grid_space; //actual x coordinate
 			let y = j * grid_space; //actual y coordinate
 			let s1 = int(random(datafiles.length));
 			let s = datafiles[s1].content;
-			nodel.push(new Nodel(s, x+5, y-5, 12, datafiles[s1].createdAt, datafiles[s1].censoredAt));  //s, x, y, sp, startT, delT
+			nodel.push(new Nodel(s, x+10, y+30, 12, datafiles[s1].createdAt, datafiles[s1].censoredAt));  //s, x, y, sp, startT, delT
       console.log(i + "," + j + ": " + datafiles[s1].id);
 		}
 	}
