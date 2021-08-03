@@ -2,7 +2,7 @@
 '''
 weiboscope_scrape.py is part of the art project Unerasable Characters II, developed by Winnie Soon
 More: http://siusoon.net/unerasable-characters-ii/
-last update: 18 Feb 2021
+last update: 3 Aug 2021
 
 Logic:
 *need python3 filename.py
@@ -27,6 +27,7 @@ log:
 - change of time format without the details of seconds
     - a crack down of weiboscope developer accounts on around 21 Jan 2021
     - change of censored at timestamp as of 17 Feb 2021
+- fixed the clean up and delete old record > 1 year as of 3 Aug 2021
 '''
 
 import requests
@@ -43,7 +44,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import pytz
 
-path = "YOUR_PATH"
+path = "YOURPATH"  #change the path
 HK = pytz.timezone('Asia/Hong_Kong')
 LOG_timestamp = datetime.datetime.now(HK)
 logging.basicConfig(filename=path + "logfilename.log", level=logging.INFO)
@@ -81,6 +82,7 @@ def processData( dataresponse, link ):
     dataCensored = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataCensored)) #remove html tags
     dataCensored = re.sub(r'Censored+\s+At:+\s', '', str(dataCensored)) #remove the field name
     dataCensored = re.sub(r'(\[\'|\'])','', str(dataCensored))  #remove '[]'
+    #date_time_obj = datetime.datetime.strptime(dataCensored, '%Y-%m-%d %H:%M:%S.%f')
     date_time_obj = datetime.datetime.strptime(dataCensored, '%Y-%m-%d %H:%M:%S')
     #compare time withtin 24 hours (LOG_timestamp - now and the data censored )
     current_time = LOG_timestamp.strftime('%Y %d %m %H %M %S')
@@ -164,7 +166,7 @@ def cleaningJSON():
                 created_time = date_time_obj.strftime('%Y %d %m %H %M %S')
                 created_time = datetime.datetime.strptime(created_time,'%Y %d %m %H %M %S')
                 if created_time < current_time:
-                    data['data'].pop(i) #delete the whole object
+                    data['data'].pop(0) #delete the whole object
         except IndexError:
             pass
         data["Number_censored_messages"] = len(data['data'])
