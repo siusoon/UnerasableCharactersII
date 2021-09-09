@@ -13,7 +13,7 @@ Logic:
 2. Update json
 - loop through all the temp data arrays and update the JSON file in one go
 3. cleaning JSON data (update with latest count + timestamp + remove too old data (more than a year) to avoid the file keep expanding over time)
-*4. sendemail() if any connection fail entirely (now only log the file)
+4. sendemail() if any connection fail entirely (now only log the file)
 
 to implement:
 - update the variable 'path'
@@ -24,10 +24,10 @@ next/oustanding:
 - cleaning data e.g url, space, emoji handling
 
 log:
-- change of time format without the details of seconds
-    - a crack down of weiboscope developer accounts on around 21 Jan 2021
-    - change of censored at timestamp as of 17 Feb 2021
-- fixed the clean up and delete old record > 1 year as of 3 Aug 2021
+- change of the time format (from weiboscope) without the details of seconds
+    - a crack down of weiboscope developer accounts on ~ 21 Jan 2021
+    - change of "censored at" timestamp as of 17 Feb 2021
+- fixed the clean up and delete old records > 1 year as of 3 Aug 2021
 '''
 
 import requests
