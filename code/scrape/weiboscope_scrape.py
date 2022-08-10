@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 '''
 weiboscope_scrape.py is part of the art project Unerasable Characters II, developed by Winnie Soon
-More: http://siusoon.net/unerasable-characters-ii/
+More: https://siusoon.net/projects/unerasablecharacters-ii
 last update: 10 Aug 2022
 
 Logic:
@@ -18,6 +18,9 @@ Logic:
 to implement:
 - update the variable 'path'
 - set the cron job frequency (now is daily) e.g /opt/alt/python36/bin/python3.6 <filepath+filename.py>
+
+version:
+- tested on python 3.6, 3.7 and 3.9
 
 next/oustanding:
 - client side's chinese font
@@ -46,6 +49,7 @@ from urllib3.util.retry import Retry
 import pytz
 
 path = "YOURPATH"
+#path = ""  #test on local
 HK = pytz.timezone('Asia/Hong_Kong')
 LOG_timestamp = datetime.datetime.now(HK)
 logging.basicConfig(filename=path + "logfilename.log", level=logging.INFO)
@@ -117,7 +121,7 @@ def processData( dataresponse, link ):
             else:
                 print("nothing in the tweet")
     else:
-        print("failed: no censored date")
+        print("skipped: no censored date")
 #2. Update JSON file with the gathered data
 def processJSON():
     with open(path+'data.json') as json_file:
