@@ -2,7 +2,7 @@
 '''
 weiboscope_scrape.py is part of the art project Unerasable Characters II, developed by Winnie Soon
 More: http://siusoon.net/unerasable-characters-ii/
-last update: 3 Aug 2021
+last update: 10 Aug 2022
 
 Logic:
 *need python3 filename.py
@@ -13,7 +13,7 @@ Logic:
 2. Update json
 - loop through all the temp data arrays and update the JSON file in one go
 3. cleaning JSON data (update with latest count + timestamp + remove too old data (more than a year) to avoid the file keep expanding over time)
-4. sendemail() if any connection fail entirely (now only log the file)
+*4. sendemail() if any connection fail entirely (now only log the file)
 
 to implement:
 - update the variable 'path'
@@ -24,10 +24,11 @@ next/oustanding:
 - cleaning data e.g url, space, emoji handling
 
 log:
-- change of the time format (from weiboscope) without the details of seconds
-    - a crack down of weiboscope developer accounts on ~ 21 Jan 2021
-    - change of "censored at" timestamp as of 17 Feb 2021
-- fixed the clean up and delete old records > 1 year as of 3 Aug 2021
+- change of time format without the details of seconds
+    - a crack down of weiboscope developer accounts on around 21 Jan 2021
+    - change of censored at timestamp as of 17 Feb 2021
+- fixed the clean up and delete old record > 1 year as of 3 Aug 2021
+- change in the latest.php display (with other URL e.g account info and some data without censored date) 10 Aug 2022
 '''
 
 import requests
@@ -44,7 +45,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import pytz
 
-path = "YOURPATH"  #change the path
+path = "YOURPATH"
 HK = pytz.timezone('Asia/Hong_Kong')
 LOG_timestamp = datetime.datetime.now(HK)
 logging.basicConfig(filename=path + "logfilename.log", level=logging.INFO)
@@ -83,37 +84,40 @@ def processData( dataresponse, link ):
     dataCensored = re.sub(r'Censored+\s+At:+\s', '', str(dataCensored)) #remove the field name
     dataCensored = re.sub(r'(\[\'|\'])','', str(dataCensored))  #remove '[]'
     #date_time_obj = datetime.datetime.strptime(dataCensored, '%Y-%m-%d %H:%M:%S.%f')
-    date_time_obj = datetime.datetime.strptime(dataCensored, '%Y-%m-%d %H:%M:%S')
-    #compare time withtin 24 hours (LOG_timestamp - now and the data censored )
-    current_time = LOG_timestamp.strftime('%Y %d %m %H %M %S')
-    current_time = datetime.datetime.strptime(current_time,'%Y %d %m %H %M %S')
-    censored_time = date_time_obj.strftime('%Y %d %m %H %M %S')
-    censored_time = datetime.datetime.strptime(censored_time,'%Y %d %m %H %M %S')
-    difference = current_time - censored_time
-    minDiff = difference.total_seconds() / 60
-    if minDiff < 1440:   #24 hours in the form of minutes
-        #extract CreatedAt:
-        dataCreated = re.findall(r'<p><b>Cr.*?<p><b>', str(data))  #extract the field name
-        dataCreated = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataCreated)) #remove html tags
-        dataCreated = re.sub(r'Created+\s+At:+\s', '', str(dataCreated)) #remove the field name
-        dataCreated = re.sub(r'(\[\'|\'])','', str(dataCreated))    #remove '[]'
-        #extract content:
-        dataContent = re.sub(r'<p>.*?Content: ', '', str(data)) #start till Content:
-        dataContent = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataContent)) #remove html tags
-        dataContent = re.sub(r'(Image.*|\\u200b|http[\S]+\s)', '', str(dataContent))  #remove image, unicode and http
-        dataContent = re.sub(r'(\[\'|\']|\n|\r)','', str(dataContent)) #remove '[]' and new line
-        dataContent = str(dataContent).strip()
-        if not dataContent == '': #store the data into arrays
-            t_dataCreated.append(dataCreated)
-            t_dataCensored.append(dataCensored)
-            t_dataContent.append(dataContent)
-            t_url.append(link)
-            print('Censored within 24 hours')
-            print('dataCreated: ' + dataCreated)
-            print('dataCensored: ' + dataCensored)
-            print('dataContent: ' + dataContent)
-        else:
-            print("nothing in the tweet")
+    if dataCensored !="":
+        date_time_obj = datetime.datetime.strptime(dataCensored, '%Y-%m-%d %H:%M:%S')
+        #compare time withtin 24 hours (LOG_timestamp - now and the data censored )
+        current_time = LOG_timestamp.strftime('%Y %d %m %H %M %S')
+        current_time = datetime.datetime.strptime(current_time,'%Y %d %m %H %M %S')
+        censored_time = date_time_obj.strftime('%Y %d %m %H %M %S')
+        censored_time = datetime.datetime.strptime(censored_time,'%Y %d %m %H %M %S')
+        difference = current_time - censored_time
+        minDiff = difference.total_seconds() / 60
+        if minDiff < 1440:   #24 hours in the form of minutes
+            #extract CreatedAt:
+            dataCreated = re.findall(r'<p><b>Cr.*?<p><b>', str(data))  #extract the field name
+            dataCreated = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataCreated)) #remove html tags
+            dataCreated = re.sub(r'Created+\s+At:+\s', '', str(dataCreated)) #remove the field name
+            dataCreated = re.sub(r'(\[\'|\'])','', str(dataCreated))    #remove '[]'
+            #extract content:
+            dataContent = re.sub(r'<p>.*?Content: ', '', str(data)) #start till Content:
+            dataContent = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataContent)) #remove html tags
+            dataContent = re.sub(r'(Image.*|\\u200b|http[\S]+\s)', '', str(dataContent))  #remove image, unicode and http
+            dataContent = re.sub(r'(\[\'|\']|\n|\r)','', str(dataContent)) #remove '[]' and new line
+            dataContent = str(dataContent).strip()
+            if not dataContent == '': #store the data into arrays
+                t_dataCreated.append(dataCreated)
+                t_dataCensored.append(dataCensored)
+                t_dataContent.append(dataContent)
+                t_url.append(link)
+                print('Censored within 24 hours')
+                print('dataCreated: ' + dataCreated)
+                print('dataCensored: ' + dataCensored)
+                print('dataContent: ' + dataContent)
+            else:
+                print("nothing in the tweet")
+    else:
+        print("failed: no censored date")
 #2. Update JSON file with the gathered data
 def processJSON():
     with open(path+'data.json') as json_file:
@@ -137,15 +141,16 @@ def processURL():
     soup = BeautifulSoup(response.content, 'html.parser')
     href = [i['href'] for i in soup.find_all('a', href=True)]
     for url2 in href:
-        try:
-            response2 = requests_retry_session().get(url2, timeout=10)
-        except Exception as e:
-            print('Fail:', e.__class__.__name__)
-            sendemail()
-        else:
-            print('Success:', url2)
-            processData( response2, url2 )
-    processJSON()
+        if "weiboscope.jmsc.hku.hk" in url2:
+            try:
+                response2 = requests_retry_session().get(url2, timeout=10)
+            except Exception as e:
+                print('Fail:', e.__class__.__name__)
+                sendemail()
+            else:
+                print('Success individual content:', url2)
+                processData( response2, url2 )
+                processJSON()
 
 def sendemail():
     #send the fail report email to the author
@@ -184,6 +189,6 @@ except Exception as e:
     print('Fail:', e.__class__.__name__)
     sendemail()
 else:
-    print('Success:', response.status_code)
+    print('Success entry link:', response.status_code)
     processURL()
     cleaningJSON()
