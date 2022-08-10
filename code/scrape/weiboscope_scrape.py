@@ -48,7 +48,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import pytz
 
-#path = "YOURPATH"
+path = "YOURPATH"
 #path = ""  #test on local
 HK = pytz.timezone('Asia/Hong_Kong')
 LOG_timestamp = datetime.datetime.now(HK)
@@ -157,7 +157,7 @@ def processURL():
             else:
                 print('Success individual content:', url2)
                 processData( response2, url2 )
-                processJSON()
+    processJSON()
 
 def sendemail():
     #send the fail report email to the author
