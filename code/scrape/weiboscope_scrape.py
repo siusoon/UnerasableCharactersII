@@ -31,7 +31,7 @@ log:
     - a crack down of weiboscope developer accounts on around 21 Jan 2021
     - change of censored at timestamp as of 17 Feb 2021
 - fixed the clean up and delete old record > 1 year as of 3 Aug 2021
-- change in the latest.php display (with other URL e.g account info and some data without censored date) 10 Aug 2022
+- change in the latest.php display (with other URL e.g account info, retweet the same content and some data without censored date) 10 Aug 2022
 '''
 
 import requests
@@ -48,7 +48,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import pytz
 
-path = "YOURPATH"
+#path = "YOURPATH"
 #path = ""  #test on local
 HK = pytz.timezone('Asia/Hong_Kong')
 LOG_timestamp = datetime.datetime.now(HK)
@@ -109,17 +109,20 @@ def processData( dataresponse, link ):
             dataContent = re.sub(r'(Image.*|\\u200b|http[\S]+\s)', '', str(dataContent))  #remove image, unicode and http
             dataContent = re.sub(r'(\[\'|\']|\n|\r)','', str(dataContent)) #remove '[]' and new line
             dataContent = str(dataContent).strip()
-            if not dataContent == '': #store the data into arrays
-                t_dataCreated.append(dataCreated)
-                t_dataCensored.append(dataCensored)
-                t_dataContent.append(dataContent)
-                t_url.append(link)
-                print('Censored within 24 hours')
-                print('dataCreated: ' + dataCreated)
-                print('dataCensored: ' + dataCensored)
-                print('dataContent: ' + dataContent)
+            if ">>>> RT" in dataContent:
+                print("skipped: retweet the same content")
             else:
-                print("nothing in the tweet")
+                if not dataContent == '': #store the data into arrays
+                    t_dataCreated.append(dataCreated)
+                    t_dataCensored.append(dataCensored)
+                    t_dataContent.append(dataContent)
+                    t_url.append(link)
+                    print('Censored within 24 hours')
+                    print('dataCreated: ' + dataCreated)
+                    print('dataCensored: ' + dataCensored)
+                    print('dataContent: ' + dataContent)
+                else:
+                    print("skipped: nothing in the tweet")
     else:
         print("skipped: no censored date")
 #2. Update JSON file with the gathered data
