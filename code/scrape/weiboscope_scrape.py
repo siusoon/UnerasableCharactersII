@@ -2,7 +2,7 @@
 '''
 weiboscope_scrape.py is part of the art project Unerasable Characters II, developed by Winnie Soon
 More: https://siusoon.net/projects/unerasablecharacters-ii
-last update: 10 Aug 2022
+last update: 13 Jan 2024
 
 Logic:
 *need python3 filename.py
@@ -27,6 +27,7 @@ next/oustanding:
 - cleaning data e.g url, space, emoji handling
 
 log:
+- change of processing decimal time > 2 digit seconds by using slice for the dataCensored field. Found the change of censored data format on weiboscope on 10-nov-2023
 - change of time format without the details of seconds
     - a crack down of weiboscope developer accounts on around 21 Jan 2021
     - change of censored at timestamp as of 17 Feb 2021
@@ -48,7 +49,6 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import pytz
 
-path = "YOURPATH"
 #path = ""  #test on local
 HK = pytz.timezone('Asia/Hong_Kong')
 LOG_timestamp = datetime.datetime.now(HK)
@@ -89,6 +89,7 @@ def processData( dataresponse, link ):
     dataCensored = re.sub(r'(\[\'|\'])','', str(dataCensored))  #remove '[]'
     #date_time_obj = datetime.datetime.strptime(dataCensored, '%Y-%m-%d %H:%M:%S.%f')
     if dataCensored !="":
+        dataCensored = dataCensored[0:19]
         date_time_obj = datetime.datetime.strptime(dataCensored, '%Y-%m-%d %H:%M:%S')
         #compare time withtin 24 hours (LOG_timestamp - now and the data censored )
         current_time = LOG_timestamp.strftime('%Y %d %m %H %M %S')
