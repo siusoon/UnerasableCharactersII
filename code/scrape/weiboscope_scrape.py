@@ -13,7 +13,8 @@ Logic:
 2. Update json
 - loop through all the temp data arrays and update the JSON file in one go
 3. cleaning JSON data (update with latest count + timestamp + remove too old data (more than a year) to avoid the file keep expanding over time)
-*4. sendemail() if any connection fail entirely (now only log the file)
+4. sendemail() if any connection fail entirely (now only log the file)
+5. patch data >> change line 105 > minDiff for more than 24 hours
 
 to implement:
 - update the variable 'path'
@@ -101,7 +102,7 @@ def processData( dataresponse, link ):
         censored_time = dt.strptime(censored_time,'%Y %d %m %H %M %S')
         difference = current_time - censored_time
         minDiff = difference.total_seconds() / 60
-        if minDiff < 1440:   #24 hours in the form of minutes
+        if minDiff < 1440:   #24 hours in the form of minutes  [patch data can change this parameter]
             #extract CreatedAt:
             dataCreated = re.findall(r'<p><b>Cr.*?<p><b>', str(data))  #extract the field name
             dataCreated = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataCreated)) #remove html tags
