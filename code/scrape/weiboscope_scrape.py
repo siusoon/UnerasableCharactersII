@@ -2,7 +2,7 @@
 '''
 weiboscope_scrape.py is part of the art project Unerasable Characters II, developed by Winnie Soon
 More: https://siusoon.net/projects/unerasablecharacters-ii
-last update: 13 Jan 2024
+last update: 20 Apr 2025
 
 Logic:
 *need python3 filename.py
@@ -27,12 +27,14 @@ next/oustanding:
 - cleaning data e.g url, space, emoji handling
 
 log:
-- change of processing decimal time > 2 digit seconds by using slice for the dataCensored field. Found the change of censored data format on weiboscope on 10-nov-2023
+- change of scrapping address: https://weiboscope.jmsc.hku.hk/latest_fw.php
+- change of processing decimal time > 2 digit seconds by using slice (for dataCensored field)
 - change of time format without the details of seconds
     - a crack down of weiboscope developer accounts on around 21 Jan 2021
     - change of censored at timestamp as of 17 Feb 2021
 - fixed the clean up and delete old record > 1 year as of 3 Aug 2021
 - change in the latest.php display (with other URL e.g account info, retweet the same content and some data without censored date) 10 Aug 2022
+- fixed the microsecond issue from the scrapped source (handle both with or without microsecond): as of 20 Apr 2025
 '''
 
 import requests
@@ -41,7 +43,6 @@ from bs4 import BeautifulSoup
 import re
 import json
 import logging
-import datetime
 from datetime import datetime as dt, timedelta
 from dateutil.relativedelta import relativedelta
 import time
@@ -49,9 +50,11 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import pytz
 
-#path = ""  #test on local
+#path = "/home/freehandhk/domains/hellozombies.net/public_html/erasure/"
+#path = "/home/aesthet7/public_html/erasure/"
+path = ""  #test on local
 HK = pytz.timezone('Asia/Hong_Kong')
-LOG_timestamp = datetime.datetime.now(HK)
+LOG_timestamp = dt.now(HK)
 logging.basicConfig(filename=path + "logfilename.log", level=logging.INFO)
 
 #define arrays for json
@@ -87,15 +90,14 @@ def processData( dataresponse, link ):
     dataCensored = re.sub(r'<[A-Za-z\/][^>]*>', '', str(dataCensored)) #remove html tags
     dataCensored = re.sub(r'Censored+\s+At:+\s', '', str(dataCensored)) #remove the field name
     dataCensored = re.sub(r'(\[\'|\'])','', str(dataCensored))  #remove '[]'
-    #date_time_obj = datetime.datetime.strptime(dataCensored, '%Y-%m-%d %H:%M:%S.%f')
     if dataCensored !="":
         dataCensored = dataCensored[0:19]
-        date_time_obj = datetime.datetime.strptime(dataCensored, '%Y-%m-%d %H:%M:%S')
+        date_time_obj = dt.strptime(dataCensored, '%Y-%m-%d %H:%M:%S')
         #compare time withtin 24 hours (LOG_timestamp - now and the data censored )
         current_time = LOG_timestamp.strftime('%Y %d %m %H %M %S')
-        current_time = datetime.datetime.strptime(current_time,'%Y %d %m %H %M %S')
+        current_time = dt.strptime(current_time,'%Y %d %m %H %M %S')
         censored_time = date_time_obj.strftime('%Y %d %m %H %M %S')
-        censored_time = datetime.datetime.strptime(censored_time,'%Y %d %m %H %M %S')
+        censored_time = dt.strptime(censored_time,'%Y %d %m %H %M %S')
         difference = current_time - censored_time
         minDiff = difference.total_seconds() / 60
         if minDiff < 1440:   #24 hours in the form of minutes
@@ -126,6 +128,7 @@ def processData( dataresponse, link ):
                     print("skipped: nothing in the tweet")
     else:
         print("skipped: no censored date")
+
 #2. Update JSON file with the gathered data
 def processJSON():
     with open(path+'data.json') as json_file:
@@ -164,6 +167,7 @@ def sendemail():
     #send the fail report email to the author
     print('nothing + send email')
     logging.info(str(LOG_timestamp) + " - critical issues & the script stops")
+
 #3 cleaning data
 def cleaningJSON():
     with open(path+'data.json') as f: #read json file data
@@ -172,12 +176,13 @@ def cleaningJSON():
         try:
             for i in range(len(data['data'])):
                 #check createdAt within 1 year
-                date_time_obj = datetime.datetime.strptime(data['data'][i]['createdAt'], '%Y-%m-%d %H:%M:%S')
+                dt_str = data['data'][i]['createdAt']
+                date_time_obj = parse_and_round(dt_str)
                 current_time = LOG_timestamp - relativedelta(years=1)
                 current_time = current_time.strftime('%Y %d %m %H %M %S')
-                current_time = datetime.datetime.strptime(current_time,'%Y %d %m %H %M %S')
+                current_time = dt.strptime(current_time,'%Y %d %m %H %M %S') #possible issue
                 created_time = date_time_obj.strftime('%Y %d %m %H %M %S')
-                created_time = datetime.datetime.strptime(created_time,'%Y %d %m %H %M %S')
+                created_time = dt.strptime(created_time,'%Y %d %m %H %M %S')
                 if created_time < current_time:
                     data['data'].pop(0) #delete the whole object
         except IndexError:
@@ -187,10 +192,19 @@ def cleaningJSON():
 
     with open(path+'data.json','w', encoding='utf-8') as f: #write json file
         print(json.dump(data, f, indent=4, ensure_ascii=False))
+#3.x round up the time field in case if microsecond appears
+def parse_and_round(dt_str):
+    try:
+        date_time_obj = dt.strptime(dt_str, '%Y-%m-%d %H:%M:%S.%f')
+    except ValueError:
+        date_time_obj = dt.strptime(dt_str, '%Y-%m-%d %H:%M:%S')
+    # Round to the nearest second
+    rounded = (date_time_obj + timedelta(microseconds=500_000)).replace(microsecond=0)
+    return rounded
 
 # **start here**
 #1. Retrieve data from weiboscope
-url = 'https://weiboscope.jmsc.hku.hk/latest.php'
+url = 'https://weiboscope.jmsc.hku.hk/latest_fw.php'
 try:
     response = requests_retry_session().get(url,timeout=50)
 except Exception as e:
