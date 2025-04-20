@@ -25,6 +25,7 @@ version:
 next/oustanding:
 - client side's chinese font
 - cleaning data e.g url, space, emoji handling
+- sorting of data
 
 log:
 - change of scrapping address: https://weiboscope.jmsc.hku.hk/latest_fw.php
@@ -93,7 +94,7 @@ def processData( dataresponse, link ):
     if dataCensored !="":
         dataCensored = dataCensored[0:19]
         date_time_obj = dt.strptime(dataCensored, '%Y-%m-%d %H:%M:%S')
-        #compare time withtin 24 hours (LOG_timestamp - now and the data censored )
+        #compare time within 24 hours (LOG_timestamp - now and the data censored )
         current_time = LOG_timestamp.strftime('%Y %d %m %H %M %S')
         current_time = dt.strptime(current_time,'%Y %d %m %H %M %S')
         censored_time = date_time_obj.strftime('%Y %d %m %H %M %S')
@@ -180,7 +181,7 @@ def cleaningJSON():
                 date_time_obj = parse_and_round(dt_str)
                 current_time = LOG_timestamp - relativedelta(years=1)
                 current_time = current_time.strftime('%Y %d %m %H %M %S')
-                current_time = dt.strptime(current_time,'%Y %d %m %H %M %S') #possible issue
+                current_time = dt.strptime(current_time,'%Y %d %m %H %M %S') 
                 created_time = date_time_obj.strftime('%Y %d %m %H %M %S')
                 created_time = dt.strptime(created_time,'%Y %d %m %H %M %S')
                 if created_time < current_time:
